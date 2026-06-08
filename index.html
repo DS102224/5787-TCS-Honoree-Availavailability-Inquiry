@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>High Holy Day Honor Availability · 5786</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #b8972a; --gold-light: #d4b060; --gold-pale: #f5edd8;
+    --navy: #1a2340; --cream: #fdf8ef; --text: #2c2c2c;
+    --border: #d9c88a; --border-light: #ede8d5;
+    --success: #3a6b3a; --error: #c0392b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  header { background: var(--navy); color: white; text-align: center; padding: 2.8rem 1.5rem 2.2rem; border-bottom: 4px solid var(--gold); position: relative; overflow: hidden; }
+  header::before { content: '✡'; position: absolute; font-size: 260px; opacity: 0.035; top: -60px; left: 50%; transform: translateX(-50%); pointer-events: none; line-height: 1; }
+  header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 600; color: var(--gold-light); position: relative; letter-spacing: 0.01em; }
+  header p { font-size: 0.88rem; font-weight: 300; margin-top: 0.45rem; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; text-transform: uppercase; position: relative; }
+  .container { max-width: 840px; margin: 0 auto; padding: 2.2rem 1.4rem 5rem; }
+  .step { background: white; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 1.4rem; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.05); }
+  .step-head { background: var(--navy); color: white; padding: 0.9rem 1.4rem; display: flex; align-items: center; gap: 0.75rem; }
+  .step-num { background: var(--gold); color: var(--navy); width: 27px; height: 27px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 600; flex-shrink: 0; }
+  .step-head h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 400; letter-spacing: 0.03em; }
+  .step-body { padding: 1.4rem; }
+  select, input[type="email"] { width: 100%; padding: 0.75rem 1rem; font-family: 'Jost', sans-serif; font-size: 0.95rem; border: 1.5px solid var(--border); border-radius: 4px; background: white; color: var(--text); transition: border-color 0.15s; appearance: none; }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b8972a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; cursor: pointer; }
+  select:focus, input[type="email"]:focus { outline: none; border-color: var(--gold); }
+  input[type="email"].invalid { border-color: var(--error); }
+  label.field-label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--navy); margin-bottom: 0.35rem; margin-top: 1rem; letter-spacing: 0.03em; text-transform: uppercase; }
+  .field-error { font-size: 0.76rem; color: var(--error); margin-top: 0.3rem; }
+  .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; }
+  @media (max-width: 520px) { .services-grid { grid-template-columns: 1fr; } }
+  .service-card { border: 1.5px solid var(--border-light); border-radius: 4px; padding: 0.75rem 1rem; cursor: pointer; transition: all 0.13s; display: flex; align-items: flex-start; gap: 0.6rem; user-select: none; background: #fdfbf6; }
+  .service-card:hover { border-color: var(--gold); background: var(--gold-pale); }
+  .service-card.selected { border-color: var(--gold); background: var(--gold-pale); box-shadow: inset 0 0 0 1px var(--gold); }
+  .check-box { width: 17px; height: 17px; border: 2px solid var(--border); border-radius: 3px; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; transition: all 0.13s; }
+  .service-card.selected .check-box { background: var(--gold); border-color: var(--gold); }
+  .svc-name { font-size: 0.83rem; font-weight: 500; color: var(--navy); line-height: 1.3; }
+  .svc-time { font-size: 0.73rem; color: #999; margin-top: 0.12rem; font-style: italic; font-family: 'Cormorant Garamond', serif; }
+  .honors-row { display: flex; gap: 0.55rem; flex-wrap: wrap; }
+  .honor-btn { border: 1.5px solid var(--border); border-radius: 4px; padding: 0.6rem 1.1rem; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.88rem; background: white; color: var(--text); transition: all 0.13s; user-select: none; }
+  .honor-btn:hover { border-color: var(--gold); background: var(--gold-pale); }
+  .honor-btn.selected { background: var(--navy); border-color: var(--navy); color: white; }
+  .no-honor-btn { border-style: dashed; color: #999; }
+  .no-honor-btn:hover { border-color: #aaa; background: #f8f8f8; }
+  .no-honor-btn.selected { background: #6b6b6b; border-color: #6b6b6b; color: white; border-style: solid; }
+  .hint { font-size: 0.76rem; color: #aaa; margin-top: 0.6rem; font-style: italic; }
+  .actions { display: flex; gap: 0.9rem; justify-content: flex-end; padding-top: 0.3rem; align-items: center; }
+  .btn-submit { background: var(--gold); color: var(--navy); border: none; padding: 0.85rem 2.2rem; font-family: 'Jost', sans-serif; font-size: 0.95rem; font-weight: 600; border-radius: 4px; cursor: pointer; letter-spacing: 0.03em; transition: background 0.15s; }
+  .btn-submit:hover { background: var(--gold-light); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-reset { background: transparent; color: #aaa; border: 1px solid #e0e0e0; padding: 0.85rem 1.4rem; font-family: 'Jost', sans-serif; font-size: 0.88rem; border-radius: 4px; cursor: pointer; transition: all 0.13s; }
+  .btn-reset:hover { border-color: #bbb; color: #666; }
+  .success-screen { display: none; text-align: center; padding: 4rem 2rem; background: white; border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 2px 16px rgba(0,0,0,0.05); }
+  .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .success-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--navy); margin-bottom: 0.7rem; }
+  .success-msg { color: #666; font-size: 0.95rem; line-height: 1.7; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.52); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
+  .modal-overlay.show { display: flex; }
+  .modal { background: white; border-radius: 8px; max-width: 430px; width: 100%; padding: 2.2rem 2rem; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.22); border: 3px solid var(--gold); }
+  .modal-icon { font-size: 2.4rem; margin-bottom: 0.6rem; }
+  .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--navy); font-weight: 600; margin-bottom: 0.6rem; }
+  .modal-body { font-size: 0.9rem; color: #555; line-height: 1.75; margin-bottom: 1.3rem; }
+  .modal-body a { color: var(--gold); font-weight: 600; text-decoration: none; }
+  .modal-body a:hover { text-decoration: underline; }
+  .btn-modal-close { background: var(--navy); color: white; border: none; padding: 0.7rem 1.8rem; border-radius: 4px; font-family: 'Jost', sans-serif; font-size: 0.9rem; cursor: pointer; }
+  .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(26,35,64,0.3); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--success); color: white; padding: 0.8rem 1.4rem; border-radius: 5px; font-size: 0.88rem; font-family: 'Jost', sans-serif; transform: translateY(80px); opacity: 0; transition: all 0.3s ease; z-index: 300; pointer-events: none; box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.error { background: var(--error); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>High Holy Day Honor Availability</h1>
+  <p>5786 · Please complete one entry per person</p>
+</header>
+
+<div class="container">
+  <div id="form-wrap">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-head"><div class="step-num">1</div><h2>Your Name &amp; Email</h2></div>
+      <div class="step-body">
+        <label class="field-label" for="name-select">Full Name</label>
+        <select id="name-select">
+          <option value="">— Choose your name —</option>
+          <option>Ruth Albert</option><option>Elaine Barger</option>
+          <option>Craig Barger</option><option>Steve Braidman</option>
+          <option>Rachel Colchamiro</option><option>Mike Cohen</option>
+          <option>Josh Coleman</option><option>Alycia Dancey</option>
+          <option>Jen Delaney</option><option>Joe Emerson</option>
+          <option>Jen Faber</option><option>Rhonda Fleming</option>
+          <option>Adam Garber</option><option>Beth Herr</option>
+          <option>Rhonda Jellenik</option><option>Adam Kempner</option>
+          <option>Teresa Kempner</option><option>Paul Kaufman</option>
+          <option>Heather Lambrecht</option><option>Marti McIntosh</option>
+          <option>Michelle Mellion</option><option>Judy Romaine</option>
+          <option>Diane Seigal</option><option>Deb Shechter</option>
+          <option>Tal Shechter</option><option>Hannah Thomas</option>
+          <option>Tracey Pavao</option><option>Scott Weber</option>
+          <option>Howard Wiseman</option>
+        </select>
+        <label class="field-label" for="email-input">Email Address</label>
+        <input type="email" id="email-input" placeholder="your@email.com" />
+        <div class="field-error" id="email-error" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-head"><div class="step-num">2</div><h2>Services Available For an Honor — Check All That Apply</h2></div>
+      <div class="step-body">
+        <div class="services-grid">
+          <div class="service-card" data-id="erev-rh"><div class="check-box">✓</div><div><div class="svc-name">Erev Rosh Hashanah</div><div class="svc-time">Mon, Sep 22 · 5:30 PM</div></div></div>
+          <div class="service-card" data-id="rh-day1-morning"><div class="check-box">✓</div><div><div class="svc-name">1st Day Rosh Hashanah — Morning</div><div class="svc-time">Tue, Sep 23 · 8:30 AM</div></div></div>
+          <div class="service-card" data-id="rh-day1-afternoon"><div class="check-box">✓</div><div><div class="svc-name">1st Day Rosh Hashanah — Afternoon</div><div class="svc-time">Tue, Sep 23 · 11:30 AM</div></div></div>
+          <div class="service-card" data-id="rh-day2"><div class="check-box">✓</div><div><div class="svc-name">2nd Day Rosh Hashanah</div><div class="svc-time">Wed, Sep 24 · 9:30 AM</div></div></div>
+          <div class="service-card" data-id="yk-morning"><div class="check-box">✓</div><div><div class="svc-name">Yom Kippur — Morning</div><div class="svc-time">Thu, Oct 2 · 8:30 AM</div></div></div>
+          <div class="service-card" data-id="yk-morning2"><div class="check-box">✓</div><div><div class="svc-name">Yom Kippur — Late Morning</div><div class="svc-time">Thu, Oct 2 · 11:30 AM</div></div></div>
+          <div class="service-card" data-id="yk-meditative"><div class="check-box">✓</div><div><div class="svc-name">Yom Kippur — Meditative Music / Yizkor</div><div class="svc-time">Thu, Oct 2 · 3:30–4:00 PM</div></div></div>
+          <div class="service-card" data-id="yk-afternoon"><div class="check-box">✓</div><div><div class="svc-name">Yom Kippur — Afternoon Service</div><div class="svc-time">Thu, Oct 2 · 4:45 PM</div></div></div>
+          <div class="service-card" data-id="yk-neila"><div class="check-box">✓</div><div><div class="svc-name">Yom Kippur — Neila Service</div><div class="svc-time">Thu, Oct 2 · 6:00 PM</div></div></div>
+        </div>
+        <p class="hint">Select all services where you are willing and able to receive an honor.</p>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-head"><div class="step-num">3</div><h2>Honors You Are Available For — Select All That Apply</h2></div>
+      <div class="step-body">
+        <div class="honors-row">
+          <button class="honor-btn" data-honor="Hagbah">Hagbah</button>
+          <button class="honor-btn" data-honor="Carry the Torah">Carry the Torah</button>
+          <button class="honor-btn" data-honor="English Reading">English Reading</button>
+          <button class="honor-btn" data-honor="Open the Ark">Open the Ark</button>
+          <button class="honor-btn no-honor-btn" data-honor="No honor needed — thank you!">🙏 Thank you, but no honor needed</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-reset" id="btn-reset">Clear Form</button>
+      <button class="btn-submit" id="btn-submit">Submit</button>
+    </div>
+  </div>
+
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">✡️</div>
+    <div class="success-title">Thank You!</div>
+    <div class="success-msg" id="success-msg"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="dup-modal">
+  <div class="modal">
+    <div class="modal-icon">⚠️</div>
+    <div class="modal-title">Already Submitted</div>
+    <div class="modal-body" id="dup-modal-body"></div>
+    <button class="btn-modal-close" onclick="document.getElementById('dup-modal').classList.remove('show')">OK, Got It</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKs3rt5re-y0Fscl7037aCokeJB8gZPRow4bmr-gxhjS4XWDQuSZUiiRymrVeDDcLLjw/exec";
+
+  const SERVICE_LABELS = {
+    'erev-rh':          'Erev RH – Mon Sep 22 5:30 PM',
+    'rh-day1-morning':  '1st Day RH – Tue Sep 23 8:30 AM',
+    'rh-day1-afternoon':'1st Day RH – Tue Sep 23 11:30 AM',
+    'rh-day2':          '2nd Day RH – Wed Sep 24 9:30 AM',
+    'yk-morning':       'YK – Thu Oct 2 8:30 AM',
+    'yk-morning2':      'YK – Thu Oct 2 11:30 AM',
+    'yk-meditative':    'YK Meditative/Yizkor – Thu Oct 2 3:30–4:00 PM',
+    'yk-afternoon':     'YK Afternoon – Thu Oct 2 4:45 PM',
+    'yk-neila':         'YK Neila – Thu Oct 2 6:00 PM',
+  };
+
+  document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('selected'));
+  });
+
+  document.querySelectorAll('.honor-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isNoHonor = btn.classList.contains('no-honor-btn');
+      if (isNoHonor) {
+        document.querySelectorAll('.honor-btn:not(.no-honor-btn)').forEach(b => b.classList.remove('selected'));
+      } else {
+        document.querySelector('.no-honor-btn').classList.remove('selected');
+      }
+      btn.classList.toggle('selected');
+    });
+  });
+
+  document.getElementById('btn-reset').addEventListener('click', resetForm);
+  function resetForm() {
+    document.getElementById('name-select').value = '';
+    document.getElementById('email-input').value = '';
+    document.getElementById('email-error').style.display = 'none';
+    document.getElementById('email-input').classList.remove('invalid');
+    document.querySelectorAll('.service-card.selected').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.honor-btn.selected').forEach(b => b.classList.remove('selected'));
+  }
+
+  function isValidEmail(addr) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr); }
+  function showEmailError(msg) {
+    const err = document.getElementById('email-error');
+    err.textContent = msg; err.style.display = 'block';
+    document.getElementById('email-input').classList.add('invalid');
+  }
+  function clearEmailError() {
+    document.getElementById('email-error').style.display = 'none';
+    document.getElementById('email-input').classList.remove('invalid');
+  }
+  document.getElementById('email-input').addEventListener('input', clearEmailError);
+
+  document.getElementById('btn-submit').addEventListener('click', async () => {
+    const name = document.getElementById('name-select').value;
+    if (!name) { showToast('Please select your name.', true); return; }
+
+    const email = document.getElementById('email-input').value.trim();
+    if (!email) { showEmailError('Please enter your email address.'); return; }
+    if (!isValidEmail(email)) { showEmailError('Please enter a valid email address (e.g. name@example.com).'); return; }
+    clearEmailError();
+
+    const services = [...document.querySelectorAll('.service-card.selected')].map(c => c.dataset.id);
+    const honors   = [...document.querySelectorAll('.honor-btn.selected')].map(b => b.dataset.honor);
+    if (!services.length && !honors.length) { showToast('Please select at least one service or honor.', true); return; }
+
+    // Check duplicate
+    try {
+      const res = await fetch(`${SCRIPT_URL}?checkName=${encodeURIComponent(name)}`);
+      const data = await res.json();
+      if (data.exists) {
+        document.getElementById('dup-modal-body').innerHTML =
+          `A response for <strong>${name}</strong> has already been received.<br><br>
+           If you need to make a change, please contact Deb directly at
+           <a href="mailto:debshechter@gmail.com">debshechter@gmail.com</a>.`;
+        document.getElementById('dup-modal').classList.add('show');
+        return;
+      }
+    } catch(e) {}
+
+    const btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Submitting…';
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, services, honors })
+      });
+
+      document.getElementById('form-wrap').style.display = 'none';
+      document.getElementById('success-screen').style.display = 'block';
+      document.getElementById('success-msg').innerHTML =
+        `<strong>${name}</strong>, your response has been recorded.<br><br>
+         We'll be in touch at <strong>${email}</strong>.<br><br>
+         Shanah Tovah! 🍎`;
+
+    } catch(err) {
+      showToast('Something went wrong — please try again.', true);
+      btn.disabled = false;
+      btn.textContent = 'Submit';
+    }
+  });
+
+  function showToast(msg, error=false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (error ? ' error' : '') + ' show';
+    setTimeout(() => t.classList.remove('show'), 3200);
+  }
+</script>
+</body>
+</html>
